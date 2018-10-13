@@ -840,10 +840,6 @@ int nvgCreateImageMem(NVGcontext* ctx, int imageFlags, unsigned char* data, int 
 {
   return -1;
 }
-int nvgCreateImageRaw(NVGcontext* ctx, int w, int h, int format, int imageFlags, const unsigned char* data)
-{
-	return ctx->params.renderCreateTexture(ctx->params.userPtr, format, w, h, imageFlags, data);
-}
 #endif/*WITH_NANOVG_SOFT*/
 
 int nvgCreateImageRGBA(NVGcontext* ctx, int w, int h, int imageFlags, const unsigned char* data)
@@ -3177,10 +3173,15 @@ float nvgTextBounds(NVGcontext* ctx, float x, float y, const char* string, const
   return 0;
 }
 
+#endif/*WITH_NANOVG_SOFT*/
+
 NVGparams* nvgGetParams(NVGcontext* ctx) {
   return &(ctx->params);
 }
 
-#endif/*WITH_NANOVG_SOFT*/
+int nvgCreateImageRaw(NVGcontext* ctx, int w, int h, int format, int imageFlags, const unsigned char* data)
+{
+	return ctx->params.renderCreateTexture(ctx->params.userPtr, format, w, h, imageFlags, data);
+}
 
 // vim: ft=c nu noet ts=4
