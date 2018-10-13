@@ -615,10 +615,22 @@ int nvgTextBreakLines(NVGcontext* ctx, const char* string, const char* end, floa
 //
 // Internal Render API
 //
+#if !defined(WITH_NANOVG_SOFT)
 enum NVGtexture {
 	NVG_TEXTURE_ALPHA = 0x01,
 	NVG_TEXTURE_RGBA = 0x02,
 };
+#else
+enum NVGtexture {
+	NVG_TEXTURE_ALPHA = 0x01,
+	NVG_TEXTURE_RGBA = 0x02,
+	NVG_TEXTURE_BGRA = 0x04,
+	NVG_TEXTURE_RGB  = 0x08,
+	NVG_TEXTURE_BGR  = 0x16,
+	NVG_TEXTURE_BGR565 = 0x32
+};
+
+#endif/*WITH_NANOVG_SOFT*/
 
 struct NVGscissor {
 	float xform[6];
@@ -677,6 +689,11 @@ void nvgDebugDumpPathCache(NVGcontext* ctx);
 #endif
 
 #define NVG_NOTUSED(v) for (;;) { (void)(1 ? (void)0 : ( (void)(v) ) ); break; }
+
+#if defined(WITH_NANOVG_SOFT)
+NVGparams* nvgGetParams(NVGcontext* ctx);
+int nvgCreateImageRaw(NVGcontext* ctx, int w, int h, int format, int imageFlags, const unsigned char* data);
+#endif/*WITH_NANOVG_SOFT*/
 
 #ifdef __cplusplus
 }
